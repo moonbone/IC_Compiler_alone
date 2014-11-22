@@ -14,13 +14,12 @@ public class Main
     	try
     	{
 	    	PrintHeader();
-	    	Iterator<Token> i = getTokens(new FileReader(args[1])).iterator();
+	    	Iterator<Token> i = getTokens(new FileReader(args[0])).iterator();
     	
 	    	while(i.hasNext())
 	    	{
 	    		Token current = i.next();
 	    		PrintToken(current.getValue(),getTagString(current.getTag(),current.getValue()),current.getLine(),current.getColumn());
-	    		
 	    	}
     		
     	    
@@ -36,7 +35,20 @@ public class Main
     
     private static String getTagString(int tag, String value)
     {
-    	
+    	switch (tag)
+    	{
+    	case sym.IDENTIFIER:
+    		return "ID";
+    	case sym.CIDENTIFIER:
+    		return "CLASS_ID";
+    	case sym.INTEGER:
+    		return "INTEGER";
+    	case sym.STRING_CONTENT:
+    		return "STRING";
+		default:
+			return value;
+    			
+    	}
     	
     }
     
@@ -62,7 +74,7 @@ public class Main
     
     public static void PrintHeader()
     {
-    	System.out.println("token\ttag\tline :column");
+    	System.out.println("token\ttag\tline:column");
     }
     public static void PrintToken(String token,String tag , int line , int column)
     {

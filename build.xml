@@ -91,7 +91,8 @@
            includeantruntime="False"
         	classpath="/usr/share/java/cup.jar"
            source="1.5"
-           debug="${debug}"
+           debug="true"
+        	debuglevel="lines, vars, and source"
            deprecation="${deprecation}"
            optimize="${optimize}"/>
     </target>
