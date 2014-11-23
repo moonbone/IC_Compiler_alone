@@ -9,6 +9,7 @@ import IC.Parser.Token;
 import IC.Parser.sym;
 public class Main
 {
+	private static String errorString = null;
     public static void main(String[] args)
     {
     	try
@@ -20,6 +21,11 @@ public class Main
 	    	{
 	    		Token current = i.next();
 	    		PrintToken(current.getValue(),getTagString(current.getTag(),current.getValue()),current.getLine(),current.getColumn());
+	    	}
+	    	
+	    	if(null != errorString)
+	    	{
+	    		PrintTokenError(errorString);
 	    	}
     		
     	    
@@ -67,14 +73,14 @@ public class Main
 	    }
 	    catch (Exception e) 
 	    {
-	        throw new RuntimeException("IO Error (brutal exit)" + e.toString());
+	        errorString = e.getMessage();
 	    }
 	    return list;
     }
     
     public static void PrintHeader()
     {
-    	System.out.println("token\ttag\tline:column");
+    	System.out.println("token\ttag\tline :column");
     }
     public static void PrintToken(String token,String tag , int line , int column)
     {

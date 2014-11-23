@@ -17,8 +17,8 @@ public class Token extends Symbol {
     }
     
     public int getTag() { return m_tag;}
-    public int getLine() { return m_line;}
-    public int getColumn() { return m_column;}
+    public int getLine() { return m_line+1;}
+    public int getColumn() { return m_column+1;}
     public String getValue() { return m_value;}
     public String toString() {return "#"+m_tag + " line#:"+m_line+" column#:"+m_column+" "+m_value;}
     

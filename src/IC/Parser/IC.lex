@@ -15,7 +15,6 @@ package IC.Parser;
 %eofval}
 
 
-
 CAPITAL=[A-Z]
 ALPHA=[A-Za-z] 
 DIGIT=[0-9]
@@ -30,6 +29,7 @@ INTEGER=0|{NONZERO}{DIGIT}*
 
 %{
  StringBuffer string = new StringBuffer();
+ int tempColumn,tempLine;
 
 %}
 
@@ -64,8 +64,8 @@ INTEGER=0|{NONZERO}{DIGIT}*
 {IDENT} { return new Token (sym.IDENTIFIER,yyline,yycolumn,yytext());}
 {INTEGER} { return new Token (sym.INTEGER,yyline,yycolumn,yytext());}
 
-\" { string.setLength(0); string.append('"'); yybegin(STRING); }
-"//".* {}
+\" { string.setLength(0); string.append('"');tempColumn=yycolumn; tempLine = yyline; yybegin(STRING); }
+"//".* { }
 "/*"   {yybegin(COMMENT); }
 
 "(" { return new Token (sym.LB,yyline,yycolumn,yytext());}
@@ -102,11 +102,13 @@ INTEGER=0|{NONZERO}{DIGIT}*
 
 
 {WHITESPACE} {}
+
+. { throw new LexicalError("line: "+yyline+" column: "+yycolumn+ " error: "+yytext());}
 }
 
 <STRING>{
 \"                             { yybegin(YYINITIAL); 
-                                   return new Token (sym.STRING_CONTENT, yyline,yycolumn,string.toString()+'"');}
+                                   return new Token (sym.STRING_CONTENT, tempLine,tempColumn,string.toString()+'"');}
 [^\\\"]+                   { string.append( yytext() ); }
 \\\"					{ string.append( yytext() ); }
 \\n					{ string.append( yytext() ); }
@@ -116,7 +118,8 @@ INTEGER=0|{NONZERO}{DIGIT}*
 
 
 <COMMENT>{
-"*/" {yybegin(YYINITIAL);}
+"*/" {yybegin(YYINITIAL); }
 . {}
+{WHITESPACE} {}
 }
 	
